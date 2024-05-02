@@ -239,9 +239,10 @@ async function run_webscrappedtext_buttonpushed(){
 
 
 	try {
-		const out = await function2call_the_callback(function2run_with_callback_return, URL).then(function(result) {return 
-			console.log("result: ", result);
-													    });
+		const out = await function2call_the_callback(function2run_with_callback_return, URL)
+			.then(function(result) { 
+				console.log("result: ", result); 
+			});
 
 	} catch (error){
           console.log('Try response error of Fetch: ', error);
