@@ -195,7 +195,7 @@ async function run_webscrappedtext_buttonpushed(){
 		       //mode: 'cors', // no-cors, *cors, same-origin
 		       // cache: "no-cache",  // *default, no-cache, reload, force-cache, only-if-cached
 		       // credentials: "same-origin", // include, *same-origin, omit
-		       // headers: headers, 
+		       headers: headers, 
 		      // redirect: "follow", // manual, *follow, error
 		      //referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
 		      };
@@ -239,21 +239,37 @@ async function run_webscrappedtext_buttonpushed(){
 
 
 	try {
-		var xmlHttp = new XMLHttpRequest();
-		xmlHttp.onreadystatechange = async function() { 
-			console.log('xmlHttp.readyState: ', xmlHttp.readyState);
-			console.log('xmlHttp.status: ', xmlHttp.status);
-			
-			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) { console.log('response: ', xmlHttp.responseText); }
-		}
-		xmlHttp.open("GET", URL, true); // true for asynchronous 
-		xmlHttp.send(null);
+		const out = await function2call_the_callback(function2run_with_callback_return, URL).then(function(result) {return 
+			console.log("result: ", result);
+													    });
 
 	} catch (error){
           console.log('Try response error of Fetch: ', error);
         }
 
 	
+}
+
+
+async function function2run_with_callback_return(return_text) {
+	console.log('return_text: ', return_text);
+}
+
+	
+async function function2call_the_callback(callback, url) {
+
+    // XMLHttpRequest must return a promise
+    var xmlHttp = new XMLHttpRequest();
+	
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            callback(xmlHttp.responseText);
+	}
+    }
+    xmlHttp.open("GET", url, true); // true for asynchronous 
+    xmlHttp.send(null);
+
+    return xmlHttp.responseText;
 }
 
 // ------------------------
