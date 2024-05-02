@@ -85,9 +85,10 @@
     <script src="https://cdn.jsdelivr.net/pyodide/dev/full/pyodide.js"></script>
 
     <script>
-      // ------------------------
 
-      function run_make_1sttextarea_appear() {
+// ------------------------
+
+async function run_make_1sttextarea_appear() {
         // if pushed textarea appears for user to input text
         var outDatalabel_textinput = document.getElementById("outDatalabel_textinput");
         outDatalabel_textinput.style.display = "block";
@@ -97,11 +98,11 @@
         var outData_textinput = document.getElementById("outData_textinput");
         outData_textinput.style.display = "block";
         outData_textinput.className ='show';
-      }  // end of run_make_1sttextarea_appear
+}
 
 
 
-      function run_regex_selection(){
+async function run_regex_selection(){
         
         // Make textinput appear
         var outData2_textinput = document.getElementById("outData2_textinput");
@@ -147,24 +148,25 @@
         var run_pyodide_button = document.getElementById("run_pyodide_button");
         run_pyodide_button.style.display = "block";
         run_pyodide_button.className ='show';
-      }
-      // ------------------------
+}
 
-      function run_webscrappedtext(){
+// ------------------------
+
+async function run_webscrappedtext(){
         // if pushed, [textarea and button] appears for user to input a URL and push the button to webscrape from the URL
 
-        run_make_1sttextarea_appear()
+        await run_make_1sttextarea_appear()
         
         // Make the button appear
         var webscrape_button = document.getElementById("webscrape_button");
         webscrape_button.style.display = "block";
         webscrape_button.className ='show';
 
-      }  // end of run_webscrappedtext
+}
 
-      // ------------------------
+// ------------------------
 
-      async function run_webscrappedtext_buttonpushed(){
+async function run_webscrappedtext_buttonpushed(){
 
         // Webscrape the URL
         // Test : https://en.wikipedia.org/wiki/Chatbot
@@ -199,38 +201,40 @@
           outData2label_textinput.style.display = "block";
           outData2label_textinput.className ='show';
 
-          run_regex_selection()
+          await run_regex_selection();
 
         } catch (error){
           document.getElementById("errorOut").innerHTML = error
         }
-      }  // end of run_webscrappedtext_buttonpushed
 
-      // ------------------------
+}
 
-      function output_results(s) {
+// ------------------------
+
+async function output_results(s) {
         output.value = s
-      }
+}
       
-      // ------------------------
+// ------------------------
 
-      // init Pyodide
-      async function main() {
-        let pyodide = await loadPyodide();
-        await pyodide.loadPackage(["regex"]);
+async function main() {
+	let pyodide = await loadPyodide();
+        
+	await pyodide.loadPackage(["regex"]);
         await pyodide.loadPackage(["numpy"]);
-        return pyodide;
-      }
+        
+	return pyodide;
+}
 
-      // ------------------------
+// var pyodideReadyPromise = main();
 
-      let pyodideReadyPromise = main();
+// ------------------------
 
-      // ------------------------
-
-      async function evaluatePython() {
-
-        let pyodide = await pyodideReadyPromise;
+async function evaluatePython() {
+	
+	var pyodide = await main();
+	// OR
+	// var pyodide = await pyodideReadyPromise;
 
         const text = document.getElementById("outData2_textinput").value;
         const user_input = document.getElementById("user_input").value;
@@ -287,12 +291,12 @@
           output_textarea.style.display = "block";
           output_textarea.className ='show';
           
-          let output = pyodide.runPython(pyodide_browser_code)
+          let output = await pyodide.runPython(pyodide_browser_code)
           
-          output_results(output);
+          await output_results(output);
 
         } catch (err) {
-          output_results(err);
+          await output_results(err);
         }
       }
 
