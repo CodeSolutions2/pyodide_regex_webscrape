@@ -180,54 +180,61 @@ async function run_webscrappedtext_buttonpushed(){
         outData2_textarea.className ='show';
 
         // Run webscrapper
-        try {
+        
 
 	let headers = {
-		'Access-Control-Allow-Origin': '*',
-		       "Connection": "keep-alive",
-		      //"processData": false
-	};
+		// "Content-Type": "application/octet-stream", 
+		// 'Content-Type': 'application/x-www-form-urlencoded',
+		"Content-Type": "application/json;charset=UTF-8", 
+		//"Access-Control-Allow-Origin": "*",
+		//       "Connection": "keep-alive",
+		//      "processData": false
+		};
+	
+	let options = {method: 'GET', // *GET, POST, PUT, DELETE
+		       mode: 'cors', // no-cors, *cors, same-origin
+		       cache: "no-cache",  // *default, no-cache, reload, force-cache, only-if-cached
+		       credentials: "same-origin", // include, *same-origin, omit
+		        headers: headers, 
+		      redirect: "follow", // manual, *follow, error
+		      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+		      };
 
-	// Print webscrapped first paragraph
-	let options = {method : 'GET', 
-		       // mode: 'cors', // no-cors, *cors, same-origin
-		       // cache: "no-cache",  // *default, no-cache, reload, force-cache, only-if-cached
-		       // credentials: "same-origin", // include, *same-origin, omit
-		       headers: headers, 
-		       redirect: "follow", // manual, *follow, error
-		       // referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-	};
+	
+	try {
+	const out = await fetch(URL, options);
+		let response = out.toString();
+		console.log('response: ', response.slice(0,10));
 
-	var out = await fetch(URL);
-		console.log('out: ', out.slice(0,10));
-          
-          await fetch(URL, options)
-		  .then(res => res)
-		  .then(async function(html_page) {
+	// OR
+		
+          // await fetch(URL, options)
+		//   .then(res => res)
+		//   .then(async function(html_page) {
 
-			  console.log('html_page: ', html_page.slice(0,100));
+		// 	  console.log('html_page: ', html_page.slice(0,100));
           
           // parse the html_page
-          let regexp = /<p>(.*?)<\/p>/g;
-          var matches = html_page.match(regexp);
-          console.log('matches: ', matches);
+          // let regexp = /<p>(.*?)<\/p>/g;
+         //  var matches = html_page.match(regexp);
+         //  console.log('matches: ', matches);
 
           // Make the next instruction visible: Tell user to modify scrapped text or leave it as is
-          var outData2label_textinput = document.getElementById("outData2label_textinput");
-          outData2label_textinput.style.display = "block";
-          outData2label_textinput.className ='show';
+       //    var outData2label_textinput = document.getElementById("outData2label_textinput");
+       //    outData2label_textinput.style.display = "block";
+       //    outData2label_textinput.className ='show';
 
 			  
-		  })
-		  .then(async function() { await run_regex_selection(); })
-		  .catch(error => { console.log(error); });
+		//   })
+		//   .then(async function() { await run_regex_selection(); })
+		//   .catch(error => { console.log(error); });
 		
           
 
           
 
         } catch (error){
-          document.getElementById("errorOut").innerHTML = error;
+          console.log('Try response error of Fetch: ', error);
         }
 
 }
