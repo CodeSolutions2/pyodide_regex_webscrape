@@ -192,12 +192,12 @@ async function run_webscrappedtext_buttonpushed(){
 		};
 	
 	let options = {method: 'GET', // *GET, POST, PUT, DELETE
-		       mode: 'cors', // no-cors, *cors, same-origin
-		       cache: "no-cache",  // *default, no-cache, reload, force-cache, only-if-cached
-		       credentials: "same-origin", // include, *same-origin, omit
-		        headers: headers, 
-		      redirect: "follow", // manual, *follow, error
-		      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+		       //mode: 'cors', // no-cors, *cors, same-origin
+		       // cache: "no-cache",  // *default, no-cache, reload, force-cache, only-if-cached
+		       // credentials: "same-origin", // include, *same-origin, omit
+		       // headers: headers, 
+		      // redirect: "follow", // manual, *follow, error
+		      //referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
 		      };
 
 	
@@ -239,12 +239,15 @@ async function run_webscrappedtext_buttonpushed(){
 
 
 	try {
-		var xhr = new XMLHttpRequest();
-		xhr.open('GET', URL);
-		xhr.onreadystatechange = function (e) {
-		  console.log('xhr.response: ', xhr.response);
-		};
-		xhr.send(null);
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.onreadystatechange = async function() { 
+			console.log('xmlHttp.readyState: ', xmlHttp.readyState);
+			console.log('xmlHttp.status: ', xmlHttp.status);
+			
+			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) { console.log('response: ', xmlHttp.responseText); }
+		}
+		xmlHttp.open("GET", URL, true); // true for asynchronous 
+		xmlHttp.send(null);
 
 	} catch (error){
           console.log('Try response error of Fetch: ', error);
