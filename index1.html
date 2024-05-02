@@ -185,9 +185,9 @@ async function run_webscrappedtext_buttonpushed(){
 	let headers = {
 		// "Content-Type": "application/octet-stream", 
 		// 'Content-Type': 'application/x-www-form-urlencoded',
-		"Content-Type": "application/json;charset=UTF-8", 
-		//"Access-Control-Allow-Origin": "*",
-		//       "Connection": "keep-alive",
+		// "Content-Type": "application/json;charset=UTF-8", 
+		"Access-Control-Allow-Origin": "*",
+		"Connection": "keep-alive",
 		//      "processData": false
 		};
 	
@@ -237,6 +237,20 @@ async function run_webscrappedtext_buttonpushed(){
           console.log('Try response error of Fetch: ', error);
         }
 
+
+	try {
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', URL);
+		xhr.onreadystatechange = function (e) {
+		  console.log('xhr.response: ', xhr.response);
+		};
+		xhr.send(null);
+
+	} catch (error){
+          console.log('Try response error of Fetch: ', error);
+        }
+
+	
 }
 
 // ------------------------
