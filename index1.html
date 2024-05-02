@@ -25,7 +25,7 @@
 
     <br>
 
-    <label id="outDatalabel_textinput" style="display:none">Input your personal text data OR URL to webscrape the first paragraph:</label>
+    <label id="outDatalabel_textinput" style="display:none">Input your personal text data OR a URL to webscrape a text page (the first paragraph of the html text page will be returned):</label>
     <br>
     <input type="text" value="" id="outData_textinput" rows="1" cols="300" placeholder="Input text OR webscrape URL" style="display:none">&nbsp;&nbsp;<button id="webscrape_button" style="display:none" onclick="run_webscrappedtext_buttonpushed()">Webscrape</button>
 
@@ -180,10 +180,19 @@
         try {
 
           // Print webscrapped first paragraph
-          // Google Script Code Implementation
-          vec = [];
-          var out = await google.script.run.withSuccessHandler(function(result){document.getElementById("outData2_textarea").innerHTML = result; vec.push(result); return result}).print_scrape_text(URL);
+          let options = {method : 'GET', 
+		       headers: headers, 
+		       cache: "no-cache", 
+		       redirect: "follow", 
+		       referrerPolicy: "origin"};
           
+          let html_page = await fetch(URL, options);
+          console.log('html_page: ', html_page.slice(0,100));
+          
+          // parse the html_page
+          let regexp = /<p>(.*?)<\/p>/g;
+          var matches = html_page.match(regexp);
+          console.log('matches: ', matches);
 
           // Make the next instruction visible: Tell user to modify scrapped text or leave it as is
           var outData2label_textinput = document.getElementById("outData2label_textinput");
