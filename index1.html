@@ -182,15 +182,25 @@ async function run_webscrappedtext_buttonpushed(){
         // Run webscrapper
         try {
 
-          // Print webscrapped first paragraph
-          let options = {method : 'GET', 
+	let headers = {
+		"Content-Type": "application/octet-stream", 
+		//"Content-Type": "application/json;charset=UTF-8", 
+		"Access-Control-Allow-Origin": "*",
+		       "Connection": "keep-alive",
+		      "processData": false
+	};
+
+	// Print webscrapped first paragraph
+	let options = {method : 'GET', 
 		       headers: headers, 
-		       cache: "no-cache", 
-		       redirect: "follow", 
-		       referrerPolicy: "origin"};
+		       redirect: "follow"
+	};
           
-          let html_page = await fetch(URL, options);
-          console.log('html_page: ', html_page.slice(0,100));
+          await fetch(URL, options)
+		  .then(res => res)
+		  .then(async function(html_page) {
+
+			  console.log('html_page: ', html_page.slice(0,100));
           
           // parse the html_page
           let regexp = /<p>(.*?)<\/p>/g;
@@ -202,10 +212,17 @@ async function run_webscrappedtext_buttonpushed(){
           outData2label_textinput.style.display = "block";
           outData2label_textinput.className ='show';
 
-          await run_regex_selection();
+			  
+		  })
+		  .then(async function() { await run_regex_selection(); })
+		  .catch(error => { console.log(error); });
+		
+          
+
+          
 
         } catch (error){
-          document.getElementById("errorOut").innerHTML = error
+          document.getElementById("errorOut").innerHTML = error;
         }
 
 }
