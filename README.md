@@ -2,7 +2,7 @@
 
 Python processing in the browser with Pyodide demonstrating Regex. The orignial inspiration for this small webapp was to investigate the reliability of performing tokenization in the browser with an existing Python script. There were limitations to performing Regex with Pyodide, specifically certain characters used in Python were different for Pyodide causing difficulty to quickly replicate/run Python code.
 
-[Completed working version] https://CodeSolutions2.github.io/pyodide_regex_webscrape/index.html
+[Completed working version] https://CodeSolutions2.github.io/pyodide_regex_webscrape/index1.html
 
 ## Blog post
 
