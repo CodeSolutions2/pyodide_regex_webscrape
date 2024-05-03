@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+
+<button id="python_load_data" onclick="python_load_data()" style="display:block">Run Pyodide</button>
+<div id="output" style="font-family:courier;font-size:24px;"></div>
+    
+<script src="https://cdn.jsdelivr.net/pyodide/dev/full/pyodide.js"></script>
+
+<script>
+
+const outp = document.getElementById('output');
+
+// ----------------------------------------------------
+  
+async function load_pyodide() {
+ // -----------------------
+ // const pyodideUrl = 'https://cdn.jsdelivr.net/pyodide/dev/full/';
+ // let pyodide = await loadPyodide({'indexURL': pyodideUrl});
+ // OR
+ let pyodide = await loadPyodide(); // more robust when browser loads quickly
+ // -----------------------
+ 
+        await pyodide.loadPackage(["pandas"]);
+ 
+        return pyodide;
+}
+
+var pyodideReadyPromise = load_pyodide();
+
+// ----------------------------------------------------
+  
+async function python_load_data() {
+
+ // using await before a variable allows the already loaded pyodide to be passed to the variable pyodide
+ var pyodide = await pyodideReadyPromise;
+
+ var csv_dataset_url = "https://raw.githubusercontent.com/CodeSolutions2/plotly_pyodide_dashboard/main/data.csv";
+
+       try {
+        let result = await pyodide.runPython("from pyodide.http import open_url; import pandas as pd; url_content = open_url("+`"${csv_dataset_url}"`+"); df = pd.read_csv(url_content); df.to_json(orient='split')");
+        
+        await output_results_load_data(result);
+       } catch (error){ 
+        console.log('error: ', error);
+       }
+}
+
+
+// ----------------------------------------------------
+
+async function output_results_load_data(result) {
+  outp.innerHTML = result;
+}
+
+// ----------------------------------------------------
+
+
+</script>
+  </body>
+</html>
